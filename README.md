@@ -1,1 +1,1 @@
-# gepi_latas
+# Gépi látás (GKLB_INTM038) feladat
