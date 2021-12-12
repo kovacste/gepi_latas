@@ -1,4 +1,4 @@
-function cannyEdge(src, { threshold1 = 50, threshold2 = 100, apertureSize = 3, L2gradient = false } = {}) {
+function cannyEdge(src, { threshold1 = 120, threshold2 = 120, apertureSize = 3, L2gradient = true } = {}) {
     const dst = new cv.Mat();
     const srcCopy = src.clone();
     cv.cvtColor(srcCopy, srcCopy, cv.COLOR_RGB2GRAY, 0);
@@ -35,40 +35,55 @@ function resizeImage(src, { width, height }) {
   
   function toTresholdedBinary(src, { thresh = 125, maxval = 255 } = {}) {
     const srcCopy = src.clone();
-    cv.threshold(srcCopy, srcCopy, thresh, maxval, cv.THRESH_BINARY);
+    cv.threshold(srcCopy, srcCopy, thresh, maxval, cv.THRESH_BINARY_INV + cv.THRESH_OTSU);
     return srcCopy;
+  }
+
+  function toTresholdedBinaryInPlace(src, { thresh = 125, maxval = 255 } = {}) {
+    cv.threshold(src, src, thresh, maxval, cv.THRESH_BINARY_INV + cv.THRESH_OTSU);
+    return src;
   }
   
   function getContourImage(src) {
     let dst = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
-    let contours = new cv.MatVector();
-    let hierarchy = new cv.Mat();
-    let poly = new cv.MatVector();
-    cv.findContours(src, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_NONE);
-    for (let i = 0; i < contours.size(); ++i) {
-        let tmp = new cv.Mat();
-        let cnt = contours.get(i);
-        cv.approxPolyDP(cnt, tmp, 3, true);
-        poly.push_back(tmp);
-        cnt.delete();
-        tmp.delete();
+    let contours = getContours(src);
+    for (let i = 0; i < contours.poly.size(); ++i) {
+        let color = new cv.Scalar(255, 255, 0);
+        cv.drawContours(dst, contours.poly, i, color, 1, 8, contours.hierarchy, 0);
     }
-    for (let i = 0; i < contours.size(); ++i) {
-        let color = new cv.Scalar(
-          Math.round(Math.random() * 255),
-          Math.round(Math.random() * 255),
-          Math.round(Math.random() * 255)
-        );
-        cv.drawContours(dst, poly, i, color, 1, 8, hierarchy, 0);
-    }
-    contours.delete();
-    hierarchy.delete();
+    contours.hierarchy.delete();
     return dst;
+  }
+
+  function getContours(src) {
+      let contours = new cv.MatVector();
+      let hierarchy = new cv.Mat();
+      let poly = new cv.MatVector();
+      let squares = new cv.MatVector();
+      cv.findContours(src, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_NONE);
+      for (let i = 0; i < contours.size(); ++i) {
+          let tmp = new cv.Mat();
+          let cnt = contours.get(i);
+          cv.approxPolyDP(cnt, tmp, 8, true);
+          poly.push_back(tmp);
+          if(tmp.size().height === 4) {
+              squares.push_back(tmp);
+          }
+          cnt.delete();
+          tmp.delete();
+      }
+      function clear() {
+          poly.delete();
+          hierarchy.delete();
+          contours.delete();
+          squares.delete();
+      }
+      return { poly, hierarchy, contours, squares, clear };
   }
   
   function blurImage(src) {
     let dst = new cv.Mat();
-    cv.bilateralFilter(src, dst, 20, 200, 200, cv.BORDER_DEFAULT);
+    cv.bilateralFilter(src, dst, 5, 10, 100, cv.BORDER_DEFAULT);
     return dst;
   }
 

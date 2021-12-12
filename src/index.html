@@ -11,96 +11,13 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     >
-
     <title></title>
 
   </head>
 
   <body>
 
-  <img class="table-piece" id="black_disk_brown_bg" src="./../images/black_disk_brown_bg.jpg" style="display: none;" />
-  <img class="table-piece" id="black_disk_grey_bg" src="./../images/black_disk_grey_bg.jpg" style="display: none;" />
-  <img class="table-piece" id="board_1" src="./../images/board_1.jpg" style="display: none;" />
-  <img class="table-piece" id="board_2" src="./../images/board_2.jpg" style="display: none;" />
-  <img class="table-piece" id="board_3" src="./../images/board_3.jpg" style="display: none;" />
-  <img class="table-piece" id="board_with_disks_1" src="./../images/board_with_disks_1.jpg" style="display: none;" />
-  <img class="table-piece" id="board_with_disks_2" src="./../images/board_with_disks_2.jpg" style="display: none;" />
-  <img class="table-piece" id="board_with_disks_3" src="./../images/board_with_disks_3.jpg" style="display: none;" />
-  <img class="table-piece" id="board_with_disks_4" src="./../images/board_with_disks_4.jpg" style="display: none;" />
-  <img class="table-piece" id="board_with_disks_5" src="./../images/board_with_disks_5.jpg" style="display: none;" />
-  <img class="table-piece" id="white_disk_brown_bg" src="./../images/white_disk_brown_bg.jpg" style="display: none;" />
-  <img class="table-piece" id="white_disk_grey_bg" src="./../images/white_disk_grey_bg.jpg" style="display: none;" />
-
-
   <div class="container">
-
-    <div class="row">
-
-      <div
-        class="col left-side"
-        style="border: 1px solid grey;"
-      >
-
-        <div class="inputoutput">
-
-          <img
-            width="500"
-            id="imageSrc"
-            alt="No Image"
-          />
-
-          <div class="caption">
-
-            imageSrc
-
-            <input
-              type="file"
-              id="fileInput"
-              name="file"
-            />
-
-          </div>
-
-        </div>
-
-        <div class="inputoutput">
-
-          <canvas
-            width="500"
-            id="canvasOutput"
-          ></canvas>
-
-          <div class="caption">
-
-            canvasOutput
-
-          </div>
-
-        </div>
-    
-        <div id="input-img-props"></div>
-
-      </div>
-
-      <div
-        class="col right-side"
-        style="border: 1px solid grey;"
-      >
-
-        <div class="inputoutput">
-
-          <canvas
-            width="500"
-            id="canvas2"
-          ></canvas>
-
-        </div>
-
-        <div id="output-img-props"></div>
-
-      </div>
-
-      <div>
 
         <table width="0" cellspacing="0" cellpadding="0" border="0">
         
@@ -108,10 +25,13 @@
 
             <tr>
               <td>
-                  <video id="videoInput" width="320" height="240"></video>
+                  <video id="videoInput" width="640" height="480"></video>
               </td>
               <td>
-                  <canvas id="canvasOutput" width="320" height="240"></canvas>
+                  <canvas id="canvasOutput" width="640" height="480"></canvas>
+              </td>
+                <td>
+                  <canvas id="canvasOutput2" width="640" height="480"></canvas>
               </td>
               <td></td>
               <td></td>
@@ -127,15 +47,8 @@
               <td></td>
               <td></td>
           </tr>
-          </tbody></table>
-      </div>
-
-    </div>
-
-    <div class="row">
-      <div id="debug"></div>
-    </div>
-  
+          </tbody>
+        </table>
   </div>
 
   <script
